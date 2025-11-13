@@ -226,7 +226,7 @@ Content-Type: application/json
 
 {
   "code": "your code here",
-  "language": "cpp",
+  "language": "c++20",
   "stdin": "input data",
   "run": true
 }
@@ -236,8 +236,9 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "uuid-string",
-  "message": "Paste created successfully"
+  "message": "Created",
+  "paste_id": "uuid-string",
+  "url": "/api/pastes/uuid-string"
 }
 ```
 
@@ -251,9 +252,9 @@ GET /api/pastes/:id
 
 ```json
 {
-  "id": "uuid-string",
+  "ID": "uuid-string",
   "code": "your code here",
-  "language": "cpp",
+  "language": "c++20",
   "stdin": "input data",
   "stdout": "program output",
   "stderr": "error output",
@@ -277,7 +278,7 @@ GET /api/languages
 
 ```json
 {
-  "languages": ["cpp", "python", "java", "go"]
+  "languages": ["c++20"]
 }
 ```
 
