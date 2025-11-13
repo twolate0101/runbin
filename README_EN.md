@@ -151,72 +151,19 @@ The frontend will run at `http://localhost:5173`.
 
 ## 🐳 Docker Deployment
 
-### Build Images
+### Frontend Web Deployment
+
+The frontend supports Docker deployment:
 
 ```bash
-# Build API and Worker images
-docker build -t runbin-api -f Dockerfile.api .
-docker build -t runbin-worker -f Dockerfile.worker .
-
-# Build frontend image
 cd web
 docker build -t runbin-web .
+docker run -d -p 80:80 -e BACKEND_URL=http://your-api-url:8080 runbin-web
 ```
 
-### Using Docker Compose
+For detailed frontend deployment instructions, see [web/README.md](web/README.md).
 
-Create `docker-compose.yml`:
-
-```yaml
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: runbin
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  api:
-    image: runbin-api
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_DSN: "host=postgres port=5432 user=postgres password=password dbname=runbin sslmode=disable"
-
-  worker:
-    image: runbin-worker
-    depends_on:
-      - postgres
-      - api
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      DATABASE_DSN: "host=postgres port=5432 user=postgres password=password dbname=runbin sslmode=disable"
-
-  web:
-    image: runbin-web
-    ports:
-      - "80:80"
-    environment:
-      BACKEND_URL: "http://localhost:8080"
-
-volumes:
-  postgres_data:
-```
-
-Start all services:
-
-```bash
-docker-compose up -d
-```
+> **Note**: API and Worker services do not currently support Docker deployment. Please run them directly with Go.
 
 ## 📡 API Documentation
 

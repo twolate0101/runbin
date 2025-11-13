@@ -149,72 +149,19 @@ npm run dev
 
 ## 🐳 Docker 部署
 
-### 构建镜像
+### 前端 Web 部署
+
+前端支持 Docker 部署：
 
 ```bash
-# 构建 API 和 Worker 镜像
-docker build -t runbin-api -f Dockerfile.api .
-docker build -t runbin-worker -f Dockerfile.worker .
-
-# 构建前端镜像
 cd web
 docker build -t runbin-web .
+docker run -d -p 80:80 -e BACKEND_URL=http://your-api-url:8080 runbin-web
 ```
 
-### 使用 Docker Compose
+详细前端部署说明请参考 [web/README.md](web/README.md)。
 
-创建 `docker-compose.yml`:
-
-```yaml
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: runbin
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  api:
-    image: runbin-api
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_DSN: "host=postgres port=5432 user=postgres password=password dbname=runbin sslmode=disable"
-
-  worker:
-    image: runbin-worker
-    depends_on:
-      - postgres
-      - api
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      DATABASE_DSN: "host=postgres port=5432 user=postgres password=password dbname=runbin sslmode=disable"
-
-  web:
-    image: runbin-web
-    ports:
-      - "80:80"
-    environment:
-      BACKEND_URL: "http://localhost:8080"
-
-volumes:
-  postgres_data:
-```
-
-启动所有服务：
-
-```bash
-docker-compose up -d
-```
+> **注意**: API 和 Worker 服务目前尚不支持 Docker 部署，请使用 Go 直接运行。
 
 ## 📡 API 文档
 
