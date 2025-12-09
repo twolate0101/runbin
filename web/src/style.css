@@ -23,3 +23,9 @@
     background: #555; /* 悬停时颜色变深 */
     cursor: pointer;
 }
+
+/* Preserve newlines in CodeMirror tooltips (LSP hovers/diagnostics). */
+.cm-tooltip,
+.cm-tooltip .cm-diagnostic {
+    white-space: pre-wrap;
+}
