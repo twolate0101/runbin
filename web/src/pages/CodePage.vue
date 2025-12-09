@@ -24,7 +24,7 @@
           <div class="flex-1 min-h-0 ">
             <div class="w-full h-full overflow-hidden">
               <textarea name="stdin" id="stdin"
-                class="w-full h-full resize-none outline-none border-0 p-2 whitespace-nowrap" placeholder="请输入测试样例"
+                class="w-full h-full resize-none outline-none border-0 p-2 whitespace-pre-wrap" placeholder="请输入测试样例"
                 v-model="stdin"></textarea>
             </div>
           </div>
@@ -39,13 +39,9 @@
               <div v-show="time !== 0">
                 运行时间：{{ time }} ms
               </div>
-              <pre>{{ status !== 'completed' ? status : (stdout === '' ? 'Empty' : stdout) }}</pre>
-              <div v-show="stderr !== ''" class="text-red-500">
-                {{ stderr }}
-              </div>
-              <div v-show="log !== ''" class="text-red-500">
-                {{ log }}
-              </div>
+              <pre class="whitespace-pre-wrap break-words">{{ status !== 'completed' ? status : (stdout === '' ? 'Empty' : stdout) }}</pre>
+              <pre v-show="stderr !== ''" class="text-red-500 whitespace-pre-wrap break-words">{{ stderr }}</pre>
+              <pre v-show="log !== ''" class="text-red-500 whitespace-pre-wrap break-words">{{ log }}</pre>
             </div>
           </div>
         </div>
