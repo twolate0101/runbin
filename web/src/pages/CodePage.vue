@@ -130,13 +130,10 @@ onMounted(() => {
         ".cm-scroller": { overflow: "auto" }
       }),
       EditorView.updateListener.of((update) => {
-        // 只有当文档内容发生改变 且 选区也改变时才触发
         if (update.docChanged && update.selectionSet) {
           const cursorParams = update.state.selection.main.head;
           
           update.view.dispatch({
-            // 🌟 终极方案：只用 nearest
-            // 含义：确保光标在视野内。如果在，不动；如果不在，滚进来。
             effects: EditorView.scrollIntoView(cursorParams, { y: "nearest" })
           });
         }
