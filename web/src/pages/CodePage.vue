@@ -125,13 +125,10 @@ onMounted(() => {
       cpp(),
       ls,
       indentUnit.of("    "),
-      // ✨✨✨ 1. 新增：强制编辑器高度 100%，让它自己管理滚动条 ✨✨✨
       EditorView.theme({
         "&": { height: "100%" },
         ".cm-scroller": { overflow: "auto" }
       }),
-
-      // ✨✨✨ 2. 修改：滚动逻辑 ✨✨✨
       EditorView.updateListener.of((update) => {
         if (update.docChanged && update.selectionSet) {
           const cursorParams = update.state.selection.main.head;
